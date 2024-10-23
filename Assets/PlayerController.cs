@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     // tốc độ của nhân vật khi đo bộ
     public float xAxis, y;
     public Animator anim;
-
+    Animator animetor;
     public static PlayerController Instance;
     //[System.NonSerialized]
     //public StateMachine stateMachine;
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+        animetor = dashEffect.GetComponent<Animator>();
         gravity = rb.gravityScale;
         //stateMachine.Initialize(stateMachine.idleState);
 
@@ -119,6 +120,7 @@ public class PlayerController : MonoBehaviour
         isDash = false;
         rb.velocity = Vector2.zero;
         rb.gravityScale = gravity;
+        animetor.Play("Dash");
     }
     private void UseDash()
     {
@@ -134,10 +136,12 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector2.zero;
                 anim.SetBool("Walking", false);
                 anim.Play("Player_Dash");
+                
                 rb.velocity = new Vector2(dashTime * transform.localScale.x, 0);
+                animetor.Play("Dash_Effect");
                 //Debug.Log(dashEffect.name);
                 //GameObject DashC = Instantiate(dashEffect);
-                Instantiate(dashEffect, transform);
+                //Instantiate(dashEffect, transform);
                 StartCoroutine(DashTime());
             }
      
